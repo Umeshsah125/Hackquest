@@ -18,8 +18,8 @@ iv. We got following info:
     C  = IN
     
 v. Copy the above encoded value which is ofcourse a base64 encoded value.
-vi. Decode it using an online tool or we can use our own Linux distro for this one as below:
-  root> echo "aHE1e3MwX1kwdV9LTjBXX0hvV18kJDFfd29yS3N9" | base64 -d
+vi. Decode it using an online tool(base64decode.org) or we can use our own Linux distro for this one as below:
+  root> echo aHE1e3MwX1kwdV9LTjBXX0hvV18kJDFfd29yS3N9 | base64 -d
  
 vii. Flag is hq5{s0_Y0u_KN0W_HoW_$$1_worKs}
 
@@ -48,8 +48,30 @@ iv. Scrolling down through the few events we got following data in the *Details*
 v. Well, we found an interesting service named encoded with base64 encoding let's decode it.
 vi. Online tool or we can use our builtin *nix utilities.
 
-    root> echo "SFE1e01hbHdhcmVfaW1wbGVtZW50X3BlcnNpc3RlbmNlfQ==" | base64 -d
+    root> echo SFE1e01hbHdhcmVfaW1wbGVtZW50X3BlcnNpc3RlbmNlfQ== | base64 -d
 vii. Flag is HQ5{Malware_implement_persistence}
 
 
-3. 
+3.IamNotPermanent
+==================
+Points: 400
+- This was very much interesting challenge related to memory forensics which I was not able to solve at the challenge time but I solved it after an hour of end of the challenge.
+- The Question was related to memory forensics using the tools Volatility.
+- For solving this challenge, we need a Forensic tool called Volatility
+- So the steps involved are:
+
+user> sudo volatility -f IamNotPermanent.mem imageinfo
+- It gives us the information about the system profile whether it is windows XP,NT,8,10 etc..
+
+user> sudo volatility -f IamNotPermanent.mem --profile=Win7SP1x64 kdbgscan
+- Here, profile is the name we obtained from above scan and kdbgscan gives us  more accurate details about kernel profile
+
+user> sudo volatility -f IamNotPermanent.mem --profile=Win7SP1x64 cmdscan
+- It scans all the command line history which gives us an interesting encoded value of ransomeware exe file. Let's copy that value and decode it.
+
+user> echo SFE1e2NtZGxpbmVzX2FyZV9jcnVjaWFsX2R1cmluZ19mb3JlbnNpY3N9 | base64 -d
+- We can use online tool or our own linux utilities
+
+FLAG is HQ5{cmdlines_are_crucial_during_forensics}
+
+4. 
